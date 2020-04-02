@@ -4,14 +4,12 @@
     "module": "commonjs",
     "esModuleInterop": true,
     "target": "es6",
+    "declaration": true,
     "noImplicitAny": true,
     "moduleResolution": "node",
     "sourceMap": true,
     "outDir": "dist"
   },
 
-
-  "include": [
-    "src/**/*"
-  ]
+  "include": ["src/**/*"]
 }
