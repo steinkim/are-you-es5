@@ -34,9 +34,7 @@ class ModulesChecker {
                     nonEs5Dependencies.push(dependency);
                 }
             }
-            catch (err) {
-                console.log(`⚠️ ${dependency} was not checked because no entry script was found`);
-            }
+            catch (err) { }
         });
         return nonEs5Dependencies;
     }
@@ -59,11 +57,9 @@ class ModulesChecker {
             acorn.parse(code, acornOpts);
         }
         catch (err) {
-            console.log(`❌ ${dependencyName} is not ES5`);
             return false;
         }
         if (this.config.logEs5Packages) {
-            console.log(`✅ ${dependencyName} is ES5`);
         }
         return true;
     }
@@ -75,7 +71,6 @@ class ModulesChecker {
         const packageJsonPath = path_1.default.join(this.dir, 'package.json');
         const packageJson = require(packageJsonPath);
         if (!packageJson) {
-            console.error(`Failed to load package.json in ${this.dir}`);
             return null;
         }
         return Object.keys(packageJson.dependencies);
@@ -116,7 +111,6 @@ class ModulesChecker {
             nodeModules = array_flatten_1.default(nodeModules).map((entry) => getLeafFolderName(entry));
             return nodeModules;
         }
-        console.error(`Failed to find node_modules at ${this.dir}`);
         return null;
     }
 }

@@ -4,7 +4,6 @@ import fs, { lstatSync } from 'fs'
 import path from 'path'
 
 import IModuleCheckerConfig from './types/module-checker-config'
-import { IPackageJSON } from './types/package-json'
 
 export class ModulesChecker {
   public static readonly defaultConfig: IModuleCheckerConfig = {
@@ -39,11 +38,7 @@ export class ModulesChecker {
         if (!dependencyIsEs5) {
           nonEs5Dependencies.push(dependency)
         }
-      } catch (err) {
-        console.log(
-          `⚠️ ${dependency} was not checked because no entry script was found`
-        )
-      }
+      } catch (err) {}
     })
 
     return nonEs5Dependencies
@@ -72,12 +67,10 @@ export class ModulesChecker {
     try {
       acorn.parse(code, acornOpts)
     } catch (err) {
-      console.log(`❌ ${dependencyName} is not ES5`)
       return false
     }
 
     if (this.config.logEs5Packages) {
-      console.log(`✅ ${dependencyName} is ES5`)
     }
 
     return true
@@ -94,7 +87,6 @@ export class ModulesChecker {
     const packageJson = require(packageJsonPath)
 
     if (!packageJson) {
-      console.error(`Failed to load package.json in ${this.dir}`)
       return null
     }
 
@@ -146,7 +138,6 @@ export class ModulesChecker {
       return nodeModules
     }
 
-    console.error(`Failed to find node_modules at ${this.dir}`)
     return null
   }
 }
