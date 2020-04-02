@@ -4,7 +4,6 @@ import fs, { lstatSync } from 'fs'
 import path from 'path'
 
 import IModuleCheckerConfig from './types/module-checker-config'
-import { IPackageJSON } from './types/package-json'
 
 export class ModulesChecker {
   public static readonly defaultConfig: IModuleCheckerConfig = {
@@ -21,7 +20,7 @@ export class ModulesChecker {
     this.config = { ...ModulesChecker.defaultConfig, ...config }
   }
 
-  public checkModules(): string[] {
+  public getNonEs5Deps(): string[] {
     const dependencies = this.getDeps()
 
     if (!dependencies) {
@@ -40,13 +39,19 @@ export class ModulesChecker {
           nonEs5Dependencies.push(dependency)
         }
       } catch (err) {
-        console.log(
-          `⚠️ ${dependency} was not checked because no entry script was found`
-        )
+        throw new Error(`⚠️ ${dependency} was not checked because no entry script was found`)
       }
     })
 
     return nonEs5Dependencies
+  }
+
+  public checkModules(): string[] {
+    try {
+      return this.getNonEs5Deps()
+    } catch (error) {
+      console.log(error.message);
+    }
   }
 
   public getDeps(): string[] | null {

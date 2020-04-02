@@ -2,14 +2,13 @@ import * as acorn from 'acorn'
 import path from 'path'
 import { ModulesChecker } from '../src/modules-checker'
 import IModulesCheckerConfig from '../src/types/module-checker-config'
-import { IPackageJSON } from '../src/types/package-json'
 import {
   allDependencies,
   allDependenciesWithEntryPaths,
+  allDependenciesWithoutBabelAndWebpack,
   directDependencies,
-  subpackageDependencies,
   directDependenciesWithoutBabelAndWebpack,
-  allDependenciesWithoutBabelAndWebpack
+  subpackageDependencies
 } from './support/helpers/dependencies'
 
 jest.mock('acorn')
@@ -42,7 +41,7 @@ describe('constructor', () => {
     const config: IModulesCheckerConfig = {
       checkAllNodeModules: false,
       ignoreBabelAndWebpackPackages: true,
-      logEs5Packages: true // This is the overrideen value
+      logEs5Packages: true // This is the overridden value
     }
 
     expect(new ModulesChecker('', config).config).toEqual(config)
