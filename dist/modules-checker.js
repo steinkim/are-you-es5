@@ -21,7 +21,7 @@ class ModulesChecker {
         this.dir = path_1.default.resolve(dir);
         this.config = Object.assign(Object.assign({}, ModulesChecker.defaultConfig), config);
     }
-    getNonEs5Deps() {
+    checkModules() {
         const dependencies = this.getDeps();
         if (!dependencies) {
             return [];
@@ -35,18 +35,10 @@ class ModulesChecker {
                 }
             }
             catch (err) {
-                throw new Error(`⚠️ ${dependency} was not checked because no entry script was found`);
+                console.log(`⚠️ ${dependency} was not checked because no entry script was found`);
             }
         });
         return nonEs5Dependencies;
-    }
-    checkModules() {
-        try {
-            return this.getNonEs5Deps();
-        }
-        catch (error) {
-            console.log(error.message);
-        }
     }
     getDeps() {
         let deps = this.getDepsFromRootPackageJson();
