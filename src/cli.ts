@@ -32,7 +32,7 @@ program
       logEs5Packages: cmd.verbose === true
     }
 
-    const checker = new ModulesChecker(path, config)
+    const checker = new ModulesChecker(path, config, true)
     const nonEs5Dependencies = checker.checkModules()
 
     if (cmd.regex) {

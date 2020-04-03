@@ -15,11 +15,13 @@ const array_flatten_1 = __importDefault(require("array-flatten"));
 const fs_1 = __importStar(require("fs"));
 const path_1 = __importDefault(require("path"));
 class ModulesChecker {
-    constructor(dir, config = ModulesChecker.defaultConfig) {
+    constructor(dir, config = ModulesChecker.defaultConfig, isLogged = false) {
         this.dir = dir;
         this.config = config;
+        this.isLogged = isLogged;
         this.dir = path_1.default.resolve(dir);
         this.config = Object.assign(Object.assign({}, ModulesChecker.defaultConfig), config);
+        this.isLogged = isLogged;
     }
     checkModules() {
         const dependencies = this.getDeps();
@@ -35,7 +37,7 @@ class ModulesChecker {
                 }
             }
             catch (err) {
-                console.log(`⚠️ ${dependency} was not checked because no entry script was found`);
+                this.log(`⚠️ ${dependency} was not checked because no entry script was found`);
             }
         });
         return nonEs5Dependencies;
@@ -59,11 +61,11 @@ class ModulesChecker {
             acorn.parse(code, acornOpts);
         }
         catch (err) {
-            console.log(`❌ ${dependencyName} is not ES5`);
+            this.log(`❌ ${dependencyName} is not ES5`);
             return false;
         }
         if (this.config.logEs5Packages) {
-            console.log(`✅ ${dependencyName} is ES5`);
+            this.log(`✅ ${dependencyName} is ES5`);
         }
         return true;
     }
@@ -118,6 +120,11 @@ class ModulesChecker {
         }
         console.error(`Failed to find node_modules at ${this.dir}`);
         return null;
+    }
+    log(message) {
+        if (this.log) {
+            this.log(message);
+        }
     }
 }
 exports.ModulesChecker = ModulesChecker;

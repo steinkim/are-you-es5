@@ -21,7 +21,7 @@ commander_1.default
         ignoreBabelAndWebpackPackages: cmd.regexFiltering,
         logEs5Packages: cmd.verbose === true
     };
-    const checker = new modules_checker_1.ModulesChecker(path, config);
+    const checker = new modules_checker_1.ModulesChecker(path, config, true);
     const nonEs5Dependencies = checker.checkModules();
     if (cmd.regex) {
         console.log('\n\nBabel-loader exclude regex:');

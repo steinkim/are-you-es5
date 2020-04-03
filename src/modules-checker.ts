@@ -14,10 +14,12 @@ export class ModulesChecker {
 
   constructor(
     readonly dir: string,
-    readonly config: IModuleCheckerConfig = ModulesChecker.defaultConfig
+    readonly config: IModuleCheckerConfig = ModulesChecker.defaultConfig,
+    readonly isLogged: boolean = false
   ) {
     this.dir = path.resolve(dir)
     this.config = { ...ModulesChecker.defaultConfig, ...config }
+    this.isLogged = isLogged
   }
 
   public checkModules(): string[] {
@@ -39,7 +41,7 @@ export class ModulesChecker {
           nonEs5Dependencies.push(dependency)
         }
       } catch (err) {
-        console.log(
+        this.log(
           `⚠️ ${dependency} was not checked because no entry script was found`
         )
       }
@@ -71,12 +73,12 @@ export class ModulesChecker {
     try {
       acorn.parse(code, acornOpts)
     } catch (err) {
-      console.log(`❌ ${dependencyName} is not ES5`)
+      this.log(`❌ ${dependencyName} is not ES5`)
       return false
     }
 
     if (this.config.logEs5Packages) {
-      console.log(`✅ ${dependencyName} is ES5`)
+      this.log(`✅ ${dependencyName} is ES5`)
     }
 
     return true
@@ -147,5 +149,11 @@ export class ModulesChecker {
 
     console.error(`Failed to find node_modules at ${this.dir}`)
     return null
+  }
+
+  private log(message: string) {
+    if (this.isLogged) {
+      this.log(message)
+    }
   }
 }
