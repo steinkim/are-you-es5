@@ -1,6 +1,6 @@
 {
   "name": "@steinkim/are-you-es5",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "A package to help you find out which of your `node_modules` aren't ES5 so you can add them to your transpilation steps.",
   "main": "dist/index.js",
   "repository": "https://github.com/steinkim/are-you-es5.git",

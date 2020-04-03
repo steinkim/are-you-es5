@@ -122,7 +122,7 @@ class ModulesChecker {
         return null;
     }
     log(message) {
-        if (this.log) {
+        if (this.isLogged) {
             this.log(message);
         }
     }
