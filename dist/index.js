@@ -16,11 +16,11 @@ const babel_loader_regex_builder_1 = require("./babel-loader-regex-builder");
 const defaultConfig = {
     type: 'exclude',
     checkAllNodeModules: true,
-    ignoreBabelAndWebpackPackages: true,
+    ignoreBabelAndWebpackPackages: true
 };
 function nonES5Modules(config) {
     const checker = new modules_checker_1.ModulesChecker('.', config);
-    const nonEs5Modules = checker.getNonEs5Deps();
+    const nonEs5Modules = checker.checkModules();
     return nonEs5Modules;
 }
 exports.nonES5Modules = nonES5Modules;
