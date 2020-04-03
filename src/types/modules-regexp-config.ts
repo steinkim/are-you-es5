@@ -3,3 +3,9 @@ export default interface IModulesRegExpConfig {
   checkAllNodeModules?: boolean
   ignoreBabelAndWebpackPackages?: boolean
 }
+
+export const defaultConfig: IModulesRegExpConfig = {
+  type: 'exclude',
+  checkAllNodeModules: true,
+  ignoreBabelAndWebpackPackages: true
+}

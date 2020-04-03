@@ -11,13 +11,9 @@ var __rest = (this && this.__rest) || function (s, e) {
     return t;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+const modules_regexp_config_1 = require("./types/modules-regexp-config");
 const modules_checker_1 = require("./modules-checker");
 const babel_loader_regex_builder_1 = require("./babel-loader-regex-builder");
-const defaultConfig = {
-    type: 'exclude',
-    checkAllNodeModules: true,
-    ignoreBabelAndWebpackPackages: true
-};
 function nonES5Modules(config) {
     const checker = new modules_checker_1.ModulesChecker('.', config);
     const nonEs5Modules = checker.checkModules();
@@ -32,8 +28,8 @@ function nonES5ModulesRegex(config) {
     }
     return babel_loader_regex_builder_1.getBabelLoaderIgnoreRegex(nonEs5Modules);
 }
-function nonES5ModulesRegExp(config = defaultConfig) {
-    return babel_loader_regex_builder_1.toRegExp(nonES5ModulesRegex(config));
+function nonES5ModulesRegExp(config) {
+    return babel_loader_regex_builder_1.toRegExp(nonES5ModulesRegex(Object.assign(Object.assign({}, modules_regexp_config_1.defaultConfig), config)));
 }
 exports.nonES5ModulesRegExp = nonES5ModulesRegExp;
 //# sourceMappingURL=index.js.map

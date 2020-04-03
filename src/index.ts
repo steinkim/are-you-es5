@@ -1,4 +1,6 @@
-import IModulesRegExpConfig from './types/modules-regexp-config'
+import IModulesRegExpConfig, {
+  defaultConfig
+} from './types/modules-regexp-config'
 import { ModulesChecker } from './modules-checker'
 import {
   getBabelLoaderIncludeRegex,
@@ -6,12 +8,6 @@ import {
   toRegExp
 } from './babel-loader-regex-builder'
 import IModuleCheckerConfig from './types/module-checker-config'
-
-const defaultConfig: IModulesRegExpConfig = {
-  type: 'exclude',
-  checkAllNodeModules: true,
-  ignoreBabelAndWebpackPackages: true
-}
 
 export function nonES5Modules(config: IModuleCheckerConfig) {
   const checker = new ModulesChecker('.', config)
@@ -30,8 +26,6 @@ function nonES5ModulesRegex(config: IModulesRegExpConfig) {
   return getBabelLoaderIgnoreRegex(nonEs5Modules)
 }
 
-export function nonES5ModulesRegExp(
-  config: IModulesRegExpConfig = defaultConfig
-) {
-  return toRegExp(nonES5ModulesRegex(config))
+export function nonES5ModulesRegExp(config?: IModulesRegExpConfig) {
+  return toRegExp(nonES5ModulesRegex({ ...defaultConfig, ...config }))
 }
