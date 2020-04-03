@@ -1,44 +1,68 @@
 # are-you-es5
-[![](https://img.shields.io/circleci/project/github/obahareth/are-you-es5/master.svg?style=popout)](https://circleci.com/gh/obahareth/are-you-es5)
-[![](https://img.shields.io/npm/v/are-you-es5.svg?style=popout)](https://www.npmjs.com/package/are-you-es5)
-![](https://img.shields.io/node/v/are-you-es5.svg?style=popout)
+[![](https://img.shields.io/npm/v/@steinkim/are-you-es5)](https://www.npmjs.com/package/@steinkim/are-you-es5)
+![](https://img.shields.io/node/v/@steinkim/are-you-es5.svg?style=popout)
 
 
-A package to help you find out which of your `node_modules` aren't written in ES5 so you can add them to your Webpack/Rollup/Parcel  transpilation steps. This is currently [limited to checking the entrypoint scripts only](https://github.com/obahareth/are-you-es5/issues/2), which **might** actually be enough of a check to determine if a package should be transpiled or not.
+A package to help you find out which of your `node_modules` aren't written in ES5 so you can add them to your Webpack/Rollup/Parcel transpilation steps. This is currently [limited to checking the entrypoint scripts only](https://github.com/obahareth/are-you-es5/issues/2)
 
-![](./.github/assets/example.png)
-
-## Installing
-
-You can install the package globally with
+## Install
 
 ```bash
-npm install -g are-you-es5
+npm install --save-dev @steinkim/are-you-es5
+yarn add --dev @steinkim/are-you-es5
 ```
-
-or if you'd rather just run it immediately you can use npx:
-
-```bash
-npx are-you-es5 check /path/to/some/repo
-```
-
-### Aliasing
-If you've installed it globally and find it tiresome to type `are-you-es5` a lot, you can alias it to `es5`:
-
-```bash
-alias es5="are-you-es5"
-```
-
-# Upgrading from 1.1
-
-If you were on version 1.1, the `-a` or `-all` option used to be for logging all messages, this has now changed to `-v` or `--verbose` and `-a` and `-all` are now used as a flag to check all node modules.
-
-# Upgrading to 1.3
-
-1.3 Now by default skips checking anything that has the word `babel` or `webpack`, or if a string ends with `loader`.
-To restore previous behavior use the `--no-regex-filtering` option.
 
 ## Usage
+
+### In Webpack Config
+
+This is how you include non-ES5 modules to be processed by babel-loader.
+
+```javascript
+// webpack.config.js
+const {nonES5ModulesRegExp} = require('@steinkim/are-you-es5');
+
+module.exports = {
+  // ...
+  module: {
+      // ...
+      rules: [
+        {
+          test: /\.(js|jsx)$/,
+          exclude: [nonES5ModulesRegExp({type: 'exclude'})]
+          loader: 'babel-loader',
+        },
+        // ...
+      ],
+    },
+}
+```
+
+
+```javascript
+// webpack.config.js
+const {nonES5ModulesRegExp} = require('@steinkim/are-you-es5');
+
+module.exports = {
+  // ...
+  module: {
+      // ...
+      rules: [
+        {
+          test: /\.(js|jsx)$/,
+          include: [
+            path.resolve(__dirname, 'src'), // it should be YOUR src directory
+            nonES5ModulesRegExp({type: 'include'}),
+          ],
+          loader: 'babel-loader',
+        },
+        // ...
+      ],
+    },
+}
+```
+
+### CLI
 
 ```
 Usage: are-you-es5 check [options] <path>
@@ -53,7 +77,7 @@ Options:
   -h, --help            output usage information
 ```
 
-### Example
+#### Example
 
 ```bash
 are-you-es5 check /path/to/some/repo -r
