@@ -20,7 +20,7 @@ export class ModulesChecker {
     this.config = { ...ModulesChecker.defaultConfig, ...config }
   }
 
-  public getNonEs5Deps(): string[] {
+  public checkModules(): string[] {
     const dependencies = this.getDeps()
 
     if (!dependencies) {
@@ -39,19 +39,13 @@ export class ModulesChecker {
           nonEs5Dependencies.push(dependency)
         }
       } catch (err) {
-        throw new Error(`⚠️ ${dependency} was not checked because no entry script was found`)
+        console.log(
+          `⚠️ ${dependency} was not checked because no entry script was found`
+        )
       }
     })
 
     return nonEs5Dependencies
-  }
-
-  public checkModules(): string[] {
-    try {
-      return this.getNonEs5Deps()
-    } catch (error) {
-      console.log(error.message);
-    }
   }
 
   public getDeps(): string[] | null {
